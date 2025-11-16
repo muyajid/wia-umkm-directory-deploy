@@ -139,17 +139,15 @@ function Navbar() {
               <>
                 <Button
                   variant="outlined"
-                  href={"/profile-umkm"}
                   className="w-full text-sm py-2"
-                  onClick={closeMenu}
+                  onClick={() => navigate("/profile-umkm")}
                 >
                   Masuk
                 </Button>
                 <Button
                   variant="filled"
-                  href={"/register-page"}
                   className="w-full text-sm py-2"
-                  onClick={closeMenu}
+                  onClick={() => navigate("/register-page")}
                 >
                   Daftar
                 </Button>

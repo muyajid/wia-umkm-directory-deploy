@@ -40,25 +40,35 @@ export default function PageRegisterUmkm() {
 
   const daftarHandler = (e) => {
     e.preventDefault();
-    if (username == "" || password == "" || namaUsaha == "" || email == "" || nomorHp == "" || alamat == "" || pemilik == "") {
-      toast.warn("Input Tidak Boleh Ada Yang Kosong")
+    if (
+      username == "" ||
+      password == "" ||
+      namaUsaha == "" ||
+      email == "" ||
+      nomorHp == "" ||
+      alamat == "" ||
+      pemilik == ""
+    ) {
+      toast.warn("Input Tidak Boleh Ada Yang Kosong");
       return;
-    };
-    sessionStorage.setItem("umkm", JSON.stringify({
-      namaUsaha,
-      pemilik,
-      kategori,
-      email,
-      nomorHp,
-      alamat,
-      username,
-      password,
-      foto: previewImage
-    }));
-    navigate("/profile-umkm")
+    }
+    sessionStorage.setItem(
+      "umkm",
+      JSON.stringify({
+        namaUsaha,
+        pemilik,
+        kategori,
+        email,
+        nomorHp,
+        alamat,
+        username,
+        password,
+        foto: previewImage,
+      })
+    );
+    navigate("/profile-umkm");
   };
   const navigate = useNavigate();
-
 
   return (
     <motion.div
@@ -228,6 +238,7 @@ export default function PageRegisterUmkm() {
               />
               <Button
                 onClick={() => navigate("/")}
+                type={"button"}
                 text="Cancel"
                 variant="outline"
                 className="w-full sm:w-1/2 !rounded-full !py-3 !text-base"

@@ -13,7 +13,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
 
 export default function PageProfileUmkm() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    sessionStorage.getItem("isLoggedIn") === "true"
+  );
   const [activeTab, setActiveTab] = useState("produk");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState("add");
