@@ -6,6 +6,7 @@ import DetailUmkm from "./pages/pages-detail-umkm";
 import AdminUmkm from "./pages/pages-profile-umkm";
 import RegisterPage from "./pages/pages-register-umkm";
 import ScrollToTop from "./component/ScrollToTop";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -20,6 +21,17 @@ function App() {
         <Route path="/register-page" element={<RegisterPage />} /> 
         {/* <Route path="/login-page" element={<LoginPage />} />  */}
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </BrowserRouter>
   );
 }

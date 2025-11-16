@@ -7,6 +7,7 @@ function Button({
   marginTop,
   href,
   children, 
+  type
 }) {
   const baseStyle = `
     text-[15px] font-semibold py-3 px-8 rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 ${marginTop}
@@ -20,6 +21,7 @@ function Button({
       const Element = href ? Link : "button"; 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${baseStyle} ${variantStyle} ${className}`}
     >

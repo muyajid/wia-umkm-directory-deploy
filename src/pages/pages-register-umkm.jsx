@@ -1,8 +1,11 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import TextField from "../component/component-textfield.jsx";
 import Button from "../component/component-button.jsx";
 import { FaChevronDown } from "react-icons/fa";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const categories = [
   "Kuliner",
@@ -26,6 +29,37 @@ export default function PageRegisterUmkm() {
     }
   };
 
+  const [namaUsaha, setNamaUsaha] = useState("");
+  const [email, setEmail] = useState("");
+  const [nomorHp, setNomorHp] = useState("");
+  const [alamat, setAlamat] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [pemilik, setPemilik] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+
+  const daftarHandler = (e) => {
+    e.preventDefault();
+    if (username == "" || password == "" || namaUsaha == "" || email == "" || nomorHp == "" || alamat == "" || pemilik == "") {
+      toast.warn("Input Tidak Boleh Ada Yang Kosong")
+      return;
+    };
+    sessionStorage.setItem("umkm", JSON.stringify({
+      namaUsaha,
+      pemilik,
+      kategori,
+      email,
+      nomorHp,
+      alamat,
+      username,
+      password,
+      foto: previewImage
+    }));
+    navigate("/profile-umkm")
+  };
+  const navigate = useNavigate();
+
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -36,7 +70,7 @@ export default function PageRegisterUmkm() {
     >
       <div className="max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <section className="bg-white rounded-[35px] border border-gray-200 shadow-sm p-6 sm:p-8">
-          <form className="flex flex-col gap-8 w-full">
+          <form className="flex flex-col gap-8 w-full" onSubmit={daftarHandler}>
             <h2 className="text-lg font-semibold text-gray-800 mb-[-20px]">
               Buat Akun
             </h2>
@@ -47,12 +81,14 @@ export default function PageRegisterUmkm() {
                 label="Username"
                 placeholder="Masukkan Username Anda"
                 name="username"
+                onChange={(e) => setUsername(e.target.value)}
               />
               <TextField
                 label="Password"
                 type="password"
                 placeholder="Masukkan Password Anda"
                 name="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -85,6 +121,14 @@ export default function PageRegisterUmkm() {
                 label="Nama Usaha"
                 placeholder="Masukkan Nama Usaha Anda"
                 name="namaUsaha"
+                onChange={(e) => setNamaUsaha(e.target.value)}
+              />
+
+              <TextField
+                label="Nama Pemilik"
+                placeholder="Masukkan Nama Pemilik Usaha"
+                name="namaPemilik"
+                onChange={(e) => setPemilik(e.target.value)}
               />
 
               <div className="relative">
@@ -135,6 +179,13 @@ export default function PageRegisterUmkm() {
                   </motion.ul>
                 )}
               </div>
+              <TextField
+                label="Deskripsi Singkat"
+                placeholder="Masukkan Deskripsi"
+                name="deskripsi"
+                value={deskripsi}
+                onChange={(e) => setDeskripsi(e.target.value)}
+              />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <TextField
@@ -142,11 +193,13 @@ export default function PageRegisterUmkm() {
                   type="email"
                   placeholder="example@gmail.com"
                   name="email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   label="Nomor Telephone"
                   placeholder="+62-xxx-xxx"
                   name="phone"
+                  onChange={(e) => setNomorHp(e.target.value)}
                 />
               </div>
 
@@ -161,22 +214,23 @@ export default function PageRegisterUmkm() {
   text-sm transition duration-200
   focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 outline-none"
                   rows="3"
+                  onChange={(e) => setAlamat(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch gap-4 sm:gap-0 w-full mt-4 sm:mt-8">
+            <div className="flex flex-col sm:flex-row items-stretch gap-4 sm:gap-4 w-full mt-4 sm:mt-8">
               <Button
-                href={"/profile-umkm"}
+                type={"submit"}
                 text="Daftar"
                 variant="filled"
-                className="w-full sm:w-1/2 !rounded-full sm:!rounded-l-full sm:!rounded-r-none !py-3 !text-base"
+                className="w-full sm:w-1/2 !rounded-full !py-3 !text-base"
               />
               <Button
-                href={"/"}
+                onClick={() => navigate("/")}
                 text="Cancel"
                 variant="outline"
-                className="w-full sm:w-1/2 !rounded-full sm:!rounded-r-full sm:!rounded-l-none !py-3 !text-base"
+                className="w-full sm:w-1/2 !rounded-full !py-3 !text-base"
               />
             </div>
           </form>

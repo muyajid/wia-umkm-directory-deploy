@@ -147,8 +147,7 @@ const dataUmkm = [
       "Tempat hangout lengkap dengan menu makan dan minuman. Cocok buat santai sambil menikmati kopi atau camilan ringan.",
     alamat: "Jl. Raya PR Sukun, Kec. Gebog, Kudus",
     embed:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15848.535700628932!2d110.8228330321799!3d-6.753517543491608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70dba7902e1739%3A0x78eb62f66c2a1a36!2stpc2%20coffee%20n&#39;%20wifi!5e0!3m2!1sid!2sid!4v1762047960766!5m2!1sid!2sid",
-    maps: "https://maps.app.goo.gl/EnzE7YPBp25mAYuZ8",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.1337914914902!2d110.83871227317604!3d-6.753533866034747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70dba7902e1739%3A0x78eb62f66c2a1a36!2sTPC2 Coffee N Wifi!5e0!3m2!1sid!2sid!4v1763253732752!5m2!1sid!2sid",
     gambar: [
       "https://github.com/muyajid/w14/blob/main/tpc2-coffe.png?raw=true",
     ],

@@ -8,6 +8,7 @@ import UmkmCard from "../component/component-umkm-card.jsx";
 import Button from "../component/component-button.jsx";
 import CategoryBar from "../component/component-category-bar.jsx";
 import dataUmkm from "../data/data-umkm.js";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const kategori = [
@@ -20,6 +21,8 @@ function HomePage() {
   ];
   const [active, setActive] = useState("Semua");
   const [displayedData, setDisplayed] = useState(dataUmkm.slice(0, 6));
+
+  const navigate = useNavigate();
 
   const filterDataUmkm = (active) => {
     let filteredData;
@@ -60,7 +63,7 @@ function HomePage() {
         initial="hidden"
         animate="visible"
         variants={fadeInUp}
-        >
+      >
         <div className="w-full lg:w-1/2 lg:text-left">
           <motion.h1
             className="font-display text-black text-3xl lg:text-[46px] font-bold leading-tight"
@@ -82,7 +85,11 @@ function HomePage() {
               marginTop={"mt-6"}
               text={"Lihat UMKM Sekitar"}
               variant="filled"
-              href={"#umkmSection"}
+              onClick={() => {
+                document.getElementById("umkmSection")?.scrollIntoView({
+                  behavior: "smooth",
+                });
+              }}
               className="w-[250px] !py-3 !text-base !rounded-lg"
             />
           </motion.div>
@@ -139,7 +146,7 @@ function HomePage() {
             marginTop={"mt-15"}
             text={"Lihat Semua"}
             variant="rounded"
-            href={"/daftar-umkm"}
+            onClick={() => navigate("/daftar-umkm")}
           />
         </motion.div>
       </motion.section>
@@ -152,24 +159,33 @@ function HomePage() {
         variants={fadeInUp}
       >
         <div className="w-full lg:w-1/2 lg:text-left mb-10 lg:mb-0">
-          <motion.h1 className="font-display text-black text-3xl lg:text-[42px] font-bold leading-tight text-justify" variants={fadeInUp}>
+          <motion.h1
+            className="font-display text-black text-3xl lg:text-[42px] font-bold leading-tight text-justify"
+            variants={fadeInUp}
+          >
             Tingkatkan Jangkauan <br className="hidden lg:block" />
             Bisnismu Sekarang
           </motion.h1>
-          <motion.p className="font-display text-[#696969] text-[15px] lg:text-[16px] leading-relaxed mt-4 text-justify" variants={fadeInUp}>
-            Gabung bersama ratusan UMKM lainnya dan jadikan bisnismu lebih mudah ditemukan oleh pelanggan di sekitarmu.
+          <motion.p
+            className="font-display text-[#696969] text-[15px] lg:text-[16px] leading-relaxed mt-4 text-justify"
+            variants={fadeInUp}
+          >
+            Gabung bersama ratusan UMKM lainnya dan jadikan bisnismu lebih mudah
+            ditemukan oleh pelanggan di sekitarmu.
           </motion.p>
           <motion.div variants={fadeInUp}>
             <Button
               text={"Daftarkan Usaha Anda"}
               marginTop={"mt-6"}
-              href={"/register-page"}
+              onClick={() => navigate("/register-page")}
               className="w-[250px] !py-3 !text-base !rounded-full"
             />
           </motion.div>
         </div>
-        <motion.div className="w-full lg:w-1/2 flex justify-center lg:justify-end" variants={fadeIn}
->
+        <motion.div
+          className="w-full lg:w-1/2 flex justify-center lg:justify-end"
+          variants={fadeIn}
+        >
           <img
             src={heroImage2}
             alt="Daftarkan UMKM"

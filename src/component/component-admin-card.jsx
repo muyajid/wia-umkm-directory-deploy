@@ -1,6 +1,7 @@
 import Button from "./component-button";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { FiEdit, FiMail, FiMapPin, FiPhone, FiEye } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 function CardInfoUmkm({
   fotoUmkm,
@@ -12,6 +13,7 @@ function CardInfoUmkm({
   email,
   onEdit,
 }) {
+  const navigate = useNavigate();
   return (
     <div className="bg-white border border-gray-200 rounded-[15px] shadow-sm overflow-hidden">
       <img
@@ -38,18 +40,21 @@ function CardInfoUmkm({
           </p>
           <p>
             <FiMapPin className="inline mr-2 text-[#2563EB] size-[18px]" />
-            {lokasi || "Rembang, Kudus"}</p>
+            {lokasi || "Rembang, Kudus"}
+          </p>
           <p>
             <FiPhone className="inline mr-2 text-[#2563EB] size-[18px]" />
-            {phone || "+62 xxx-xxx-xxx"}</p>
+            {phone || "+62 xxx-xxx-xxx"}
+          </p>
           <p>
             <FiMail className="inline mr-2 text-[#2563EB] size-[18px]" />
-            {email || "budi@gmail.com"}</p>
+            {email || "budi@gmail.com"}
+          </p>
         </div>
         <div className="pt-3">
           <Button
             variant="outlined"
-            className="w-full !py-2 text-sm font-medium"
+            className="w-full !py-2 text-sm font-medium mt-3"
             onClick={onEdit}
           >
             <FiEdit className="size-[20px] justify-center" />
@@ -57,11 +62,21 @@ function CardInfoUmkm({
           </Button>
           <Button
             variant="outlined"
-            className="w-full !py-2 mt-2 text-sm font-medium"
+            className="w-full !py-2 mt-3 text-sm font-medium"
             href={"/umkm/16"}
           >
             <FiEye className="size-[20px] justify-center" />
             Lihat Profil UMKM
+          </Button>
+          <Button
+            variant="filled"
+            className="w-full !py-2 mt-5 text-sm font-medium"
+            onClick={() => {
+              navigate("/");
+              sessionStorage.clear();
+            }}
+          >
+            Logout
           </Button>
         </div>
       </div>

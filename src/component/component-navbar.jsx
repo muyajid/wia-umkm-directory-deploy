@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "./component-button";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loginStatus = sessionStorage.getItem("isLoggedIn");
@@ -70,14 +71,14 @@ function Navbar() {
               <>
                 <Button
                   variant="outlined"
-                  href={"/profile-umkm"}
+                  onClick={() => navigate("/profile-umkm")}
                   className="text-sm px-5 py-[6px] lg:py-[5px]"
                 >
                   Masuk
                 </Button>
                 <Button
                   variant="filled"
-                  href={"/register-page"}
+                  onClick={() => navigate("/register-page")}
                   className="text-sm px-5 py-[6px] lg:py-[5px]"
                 >
                   Daftar

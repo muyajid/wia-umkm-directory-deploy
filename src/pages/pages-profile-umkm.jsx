@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import TextField from "../component/component-textfield.jsx";
@@ -10,7 +10,7 @@ import ComponentPopupProduct from "../component/component-popup-card.jsx";
 import TabSelecting from "../component/component-tab-selecting.jsx";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
-import dataUmkm from "../data/data-umkm.js";
+import { toast } from "react-toastify";
 
 export default function PageProfileUmkm() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,33 +18,45 @@ export default function PageProfileUmkm() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMode, setPopupMode] = useState("add");
 
-  useEffect(() => {
-    const loginStatus = sessionStorage.getItem("isLoggedIn");
-    if (loginStatus === "true") {
-      setIsLoggedIn(true);
-    }
-  }, []);
+  const umkmData = JSON.parse(sessionStorage.getItem("umkm")) || {};
+  const [productList, setProductList] = useState(umkmData.product || []);
 
   const HandleEditUmkm = () => {
     setPopupMode("umkm");
     setIsPopupOpen(true);
   };
 
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
   const HandleAddProduct = () => {
     setPopupMode("add");
+    setSelectedProduct(null);
+    setSelectedIndex(null);
     setIsPopupOpen(true);
   };
 
-  const HandleEditProduct = (product) => {
+  const HandleEditProduct = (product, index) => {
     setPopupMode("edit");
     setIsPopupOpen(true);
+    setSelectedIndex(index);
+    setSelectedProduct(product);
     console.log("edit product:", product);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    setIsLoggedIn(true);
-    sessionStorage.setItem("isLoggedIn", "true");
+  const handleDelete = (productIndex) => {
+    if (!confirm("Yakin Ingin Menghapus Produk Ini?")) {
+      return;
+    }
+
+    let data = JSON.parse(sessionStorage.getItem("umkm")) || {};
+    const oldProduct = data.product;
+
+    const newProductList = oldProduct.filter((_, i) => i !== productIndex);
+
+    data.product = newProductList;
+    sessionStorage.setItem("umkm", JSON.stringify(data));
+    setProductList(newProductList);
   };
 
   const pageTransition = {
@@ -54,6 +66,21 @@ export default function PageProfileUmkm() {
     transition: { duration: 0.5, ease: "easeOut" },
   };
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const account = JSON.parse(sessionStorage.getItem("umkm"));
+    if (account && username === account.username && password === account.password) {
+      toast.success("Login Berhasil")
+      setIsLoggedIn(true);
+    } else {
+      toast.warn("Login Gagal")
+      return;
+    }
+    setIsLoggedIn(true);
+    sessionStorage.setItem("isLoggedIn", "true");
+  };
   const renderTabContent = () => (
     <AnimatePresence mode="wait">
       {activeTab === "produk" ? (
@@ -75,26 +102,27 @@ export default function PageProfileUmkm() {
               Tambah Produk
             </Button>
           </div>
-          {exampleUmkm[0].product.map((product, i) => (
-            <motion.div>
-              {" "}
-              <CardProductAdmin
-                key={i}
-                nama={product.namaProduct}
-                harga={product.harga}
-                deskripsi={product.deskripsi}
-                foto={product.gambar}
-                onEdit={() =>
-                  HandleEditProduct({
-                    nama: "Kopi Susu Matcha",
-                    harga: "Rp 20.000",
-                    deskripsi:
-                      "Minuman campuran yang menggabungkan kopi, susu, dan bubuk teh hijau matcha.",
-                  })
-                }
-              />{" "}
-            </motion.div>
-          ))}
+          {productList.length > 0 ? (
+            productList.map((product, i) => (
+              <motion.div>
+                <CardProductAdmin
+                  key={i}
+                  nama={product.namaProduct}
+                  harga={product.harga}
+                  deskripsi={product.deskripsi}
+                  foto={product.gambar}
+                  onEdit={() => HandleEditProduct(product, i)}
+                  onDelete={() => handleDelete(i)}
+                />
+              </motion.div>
+            ))
+          ) : (
+            <div className="flex justify-center items-center h-[50vh]">
+              <h1 className="text-sm sm:text-base font-medium text-gray-700">
+                Tidak Ada Product
+              </h1>
+            </div>
+          )}
         </motion.div>
       ) : (
         <motion.div key="analisis" {...pageTransition}>
@@ -104,7 +132,6 @@ export default function PageProfileUmkm() {
     </AnimatePresence>
   );
 
-  const exampleUmkm = dataUmkm.filter((data) => data.id === 16);
   return (
     <div className="m-[5px] mt-[20px] mb-[20px]">
       <AnimatePresence mode="wait">
@@ -128,12 +155,14 @@ export default function PageProfileUmkm() {
                     label="Username"
                     placeholder="Masukkan Username Anda"
                     name="username"
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                   <TextField
                     label="Password"
                     type="password"
                     placeholder="Masukkan Password Anda"
                     name="password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <div className="flex justify-between text-sm text-gray-600 mt-1">
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -147,7 +176,12 @@ export default function PageProfileUmkm() {
                       Lupa Password?
                     </Link>
                   </div>
-                  <Button text="Login" variant="filled" className="mt-2" />
+                  <Button
+                    text="Login"
+                    variant="filled"
+                    className="mt-2"
+                    type={"submit"}
+                  />
                   <p className="text-center text-sm text-gray-600 mt-2">
                     Belum Punya Akun?{" "}
                     <Link
@@ -180,14 +214,18 @@ export default function PageProfileUmkm() {
                 className="lg:col-span-1 order-1"
               >
                 <CardInfoUmkm
-                  kategori={exampleUmkm[0].kategori}
-                  namaUmkm={exampleUmkm[0].nama}
-                  owner="Fulan"
-                  lokasi="Kudus, Gebog, Besito"
-                  phone={exampleUmkm[0].phone}
-                  email={exampleUmkm[0].email}
+                  kategori={umkmData.kategori}
+                  namaUmkm={umkmData.namaUsaha}
+                  owner={umkmData.pemilik}
+                  lokasi={umkmData.alamat.slice(0, 20)}
+                  phone={umkmData.nomorHp}
+                  email={umkmData.email}
                   onEdit={HandleEditUmkm}
-                  fotoUmkm={exampleUmkm[0].gambar}
+                  fotoUmkm={
+                    umkmData.foto
+                      ? umkmData.foto
+                      : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
+                  }
                 />
               </motion.div>
 
@@ -216,6 +254,9 @@ export default function PageProfileUmkm() {
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         mode={popupMode}
+        productData={selectedProduct}
+        productIndex={selectedIndex}
+        onSave={(save) => setProductList(save)}
       />
     </div>
   );

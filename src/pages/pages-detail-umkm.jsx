@@ -20,7 +20,6 @@ function DetailUmkm() {
       </Layout>
     );
   }
-
   return (
     <Layout>
        <section className="max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-20 py-14 mt-[6vh] font-[DM_Sans]">
@@ -143,7 +142,7 @@ function DetailUmkm() {
               variant="filled"
               marginTop="mt-8"
               className="w-full !py-3 !text-base !rounded-full"
-              href={umkm.redirectPhone}
+              onClick={() => window.open(umkm.redirectPhone, '_blank')}
             />
           </div>
 
